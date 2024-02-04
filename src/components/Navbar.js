@@ -50,7 +50,7 @@ function Navbar() {
         <CiShoppingCart className=' text-xl md:text-3xl ' />
       </div>
 
-      <div ref={ref} className='w-72 h-full sideCart absolute top-0 right-0 bg-slate-500 px-8 py-10 transition-transform translate-x-full'>
+      <div ref={ref} className='w-72 h-full sideCart absolute top-0 right-0 bg-slate-500 px-8 py-10 transition-transform translate-x-full z-10'>
         <h2 className='font-bold text-xl text-center'>Shopping Cart</h2>
         <span onClick={toggleCart} className="absolute top-5 right-2 cursor-pointer text-2xl"><AiOutlineCloseCircle /></span>
         <ol className='list-decimal font-semibold'>
