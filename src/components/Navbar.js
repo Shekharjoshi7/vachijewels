@@ -35,10 +35,10 @@ function Navbar() {
           <Link href={'/AD'}>
             <li>AD</li>
           </Link>
-          <Link href={'/'}>
+          <Link href={'/Kundan'}>
             <li>Kundan</li>
           </Link>
-          <Link href={'/'}>
+          <Link href={'/Copper'}>
             <li>Copper</li>
           </Link>
           <Link href={'/'}>
@@ -57,7 +57,7 @@ function Navbar() {
           <li>
             <div className="item flex my-5">
 
-              <div className='w-2/3 font-semibold' >AD Nackless set</div>
+              <div className='w-2/3 font-semibold' >AD Necklace set</div>
               <div className='w-1/3 font-semibold  flex items-center justify-center text-lg'>
                 <AiFillMinusCircle className='cursor-pointer' />
                 <span className="mx-2 text-sm">1</span>

@@ -19,7 +19,7 @@ const AD = () => {
                                     <img alt="ecommerce" className="m-auto md:mx-0 h-[25vh] md:h-[30vh] block" src="https://m.media-amazon.com/images/W/MEDIAX_849526-T2/images/I/71QwbqDvkVL._SL1500_.jpg" />
                                 </a>
                                 <div className="mt-4 text-center md:text-left">
-                                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">AD jewellry</h3>
+                                    <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">Kundan jewellry</h3>
                                     <h2 className="text-gray-900 title-font text-lg font-medium">Necklace</h2>
                                     <p className="mt-1">₹2000</p>
                                 </div>
