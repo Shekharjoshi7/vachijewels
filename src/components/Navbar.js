@@ -6,8 +6,14 @@ import Link from 'next/link'
 import { CiShoppingCart } from "react-icons/ci";
 import { AiOutlineCloseCircle, AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { BsBagCheckFill } from "react-icons/bs";
+import { useSelector } from 'react-redux';
+import { incrementQuantity, decrementQuantity, removeToCart } from '@/store/cartSlice';
+import { useDispatch } from 'react-redux';
+
 
 function Navbar() {
+  const item = useSelector((state) => state.allCart.cart);
+  const dispatch = useDispatch();
   const toggleCart = () => {
     if (ref.current.classList.contains('translate-x-full')) {
       ref.current.classList.remove('translate-x-full')
@@ -50,27 +56,34 @@ function Navbar() {
         <CiShoppingCart className=' text-xl md:text-3xl text-white ' />
       </div>
 
-      <div ref={ref} className='w-72 h-full sideCart absolute top-0 right-0 bg-cyan-400 px-8 py-10 transition-transform translate-x-full z-10  text-white '>
+      <div ref={ref} className='w-72 h-full  sideCart absolute top-0 right-0 bg-cyan-400 px-8 py-10 transition-transform translate-x-full z-10  text-white '>
         <h2 className='font-bold text-xl text-center'>Shopping Cart</h2>
-        <span onClick={toggleCart} className="absolute top-5 right-2 cursor-pointer text-2xl"><AiOutlineCloseCircle  /></span>
+        <span onClick={toggleCart} className="absolute top-5 right-2 cursor-pointer text-2xl"><AiOutlineCloseCircle /></span>
         <ol className='list-decimal font-semibold'>
-          <li>
-            <div className="item flex my-5">
+          {item && item.map((product, key) => {
+            return (
+              <li key={key}>
+                <div className="item flex my-5">
 
-              <div className='w-2/3 font-semibold' >AD Necklace set</div>
-              <div className='w-1/3 font-semibold  flex items-center justify-center text-lg'>
-                <AiFillMinusCircle className='cursor-pointer  text-cyan-600' />
-                <span className="mx-2 text-sm">1</span>
-                <AiFillPlusCircle className='cursor-pointer  text-cyan-600' />
-              </div>
-            </div>
-          </li>
+                  <div className='w-2/3 font-semibold' >{product.name}</div>
+                  <div className='w-1/3 font-semibold  flex items-center justify-center text-lg'>
+                    <AiFillMinusCircle onClick={() => dispatch(decrementQuantity(product.id))} className='cursor-pointer  text-cyan-600' />
+                    <span className="mx-2 text-sm">{product.quantity}</span>
+                    <AiFillPlusCircle onClick={() => dispatch(incrementQuantity(product.id))} className='cursor-pointer  text-cyan-600' />
+                  </div>
+                </div>
+              </li>
+            )
+
+          })
+          }
+
         </ol>
         <div className='flex'>
-            <button className="flex mr-2  text-white bg-cyan-600 border-0 py-2 px-2 focus:outline-none hover:bg-cyan-700 rounded text-sm"><BsBagCheckFill className='m-1'/>Checkout</button>
-            <button className="flex  mr-2  text-white bg-cyan-600 border-0 py-2 px-2 focus:outline-none hover:bg-cyan-700 rounded text-sm">Clear Cart</button>
+          <button className="flex mr-2  text-white bg-cyan-600 border-0 py-2 px-2 focus:outline-none hover:bg-cyan-700 rounded text-sm"><BsBagCheckFill className='m-1' />Checkout</button>
+          <button className="flex  mr-2  text-white bg-cyan-600 border-0 py-2 px-2 focus:outline-none hover:bg-cyan-700 rounded text-sm" onClick={() => dispatch(removeToCart())}>Clear Cart</button>
 
-          </div>
+        </div>
 
       </div>
     </div>
