@@ -59,9 +59,26 @@ const cartSlice = createSlice({
                     return item;
                 }
             })
+        },
+        getCartTotal:(state)=>{
+            let {totalPrice,totalQuantity} = state.cart.reduce(
+                (cartTotal,cartItem)=>{
+                    const{price,quantity}=cartItem;
+                    const itemTotal= price * quantity;
+                    cartTotal.totalPrice+= itemTotal;
+                    cartTotal.totalQuantity+=quantity;
+                    return cartTotal
+                },
+                {
+                    totalPrice: 0 ,
+                    totalQuantity:0
+                }
+            );
+                state.totalPrice=parseInt(totalPrice.toFixed(2));
+                state.totalQuantity =totalQuantity;
         }
     }
 });
 
-export const { addToCart,removeToCart, incrementQuantity ,decrementQuantity } = cartSlice.actions;
+export const { addToCart,removeToCart, incrementQuantity ,decrementQuantity ,getCartTotal} = cartSlice.actions;
 export default cartSlice.reducer

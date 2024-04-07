@@ -1,19 +1,25 @@
 'use client';
 
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { CiShoppingCart } from "react-icons/ci";
 import { AiOutlineCloseCircle, AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { BsBagCheckFill } from "react-icons/bs";
 import { useSelector } from 'react-redux';
-import { incrementQuantity, decrementQuantity, removeToCart } from '@/store/cartSlice';
+import { incrementQuantity, decrementQuantity, removeToCart,getCartTotal } from '@/store/cartSlice';
 import { useDispatch } from 'react-redux';
 
 
 function Navbar() {
+
   const item = useSelector((state) => state.allCart.cart);
+  const {totalPrice} = useSelector((state) => state.allCart);
   const dispatch = useDispatch();
+  useEffect(()=>{
+    dispatch(getCartTotal());
+  },[item])
+
   const toggleCart = () => {
     if (ref.current.classList.contains('translate-x-full')) {
       ref.current.classList.remove('translate-x-full')
@@ -79,8 +85,9 @@ function Navbar() {
           }
 
         </ol>
+        <div className="font-bold my-2">Subtotal: ₹{totalPrice}</div>
         <div className='flex'>
-          <button className="flex mr-2  text-white bg-cyan-600 border-0 py-2 px-2 focus:outline-none hover:bg-cyan-700 rounded text-sm"><BsBagCheckFill className='m-1' />Checkout</button>
+         <Link href={'../Checkout'}><button className="flex mr-2  text-white bg-cyan-600 border-0 py-2 px-2 focus:outline-none hover:bg-cyan-700 rounded text-sm"><BsBagCheckFill className='m-1' />Checkout</button></Link> 
           <button className="flex  mr-2  text-white bg-cyan-600 border-0 py-2 px-2 focus:outline-none hover:bg-cyan-700 rounded text-sm" onClick={() => dispatch(removeToCart())}>Clear Cart</button>
 
         </div>
