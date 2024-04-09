@@ -5,20 +5,20 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { CiShoppingCart } from "react-icons/ci";
 import { AiOutlineCloseCircle, AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
-import { BsBagCheckFill } from "react-icons/bs";
+import { BsBagCheckFill, BsPersonCircle } from "react-icons/bs";
 import { useSelector } from 'react-redux';
-import { incrementQuantity, decrementQuantity, removeToCart,getCartTotal } from '@/store/cartSlice';
 import { useDispatch } from 'react-redux';
+import { incrementQuantity, decrementQuantity, removeToCart, getCartTotal } from '@/store/cartSlice';
 
 
 function Navbar() {
 
   const item = useSelector((state) => state.allCart.cart);
-  const {totalPrice} = useSelector((state) => state.allCart);
+  const { totalPrice } = useSelector((state) => state.allCart);
   const dispatch = useDispatch();
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getCartTotal());
-  },[item])
+  }, [item])
 
   const toggleCart = () => {
     if (ref.current.classList.contains('translate-x-full')) {
@@ -58,11 +58,14 @@ function Navbar() {
           </Link>
         </ul>
       </div>
-      <div onClick={toggleCart} className="cart absolute right-0 mx-5 top-4 cursor-pointer">
-        <CiShoppingCart className=' text-xl md:text-3xl text-white ' />
+      <div className=" flex  cart absolute right-1 top-4 mx-4 cursor-pointer">
+        <Link className=' m-auto' href={"/login"}>
+          <BsPersonCircle className='mx-2 text-xl md:text-2xl text-white ' />
+        </Link>
+        <CiShoppingCart onClick={toggleCart} className=' text-xl md:text-3xl text-white ' />
       </div>
 
-      <div ref={ref} className='w-72 h-full  sideCart absolute top-0 right-0 bg-cyan-400 px-8 py-10 transition-transform translate-x-full z-10  text-white '>
+      <div ref={ref} className={`w-72 h-full  sideCart absolute top-0 right-0 bg-cyan-400 px-8 py-10 transition-transform ${item.length !== 0 ? 'translate-x-0' : 'translate-x-full'} z-10  text-white `}>
         <h2 className='font-bold text-xl text-center'>Shopping Cart</h2>
         <span onClick={toggleCart} className="absolute top-5 right-2 cursor-pointer text-2xl"><AiOutlineCloseCircle /></span>
         <ol className='list-decimal font-semibold'>
@@ -87,7 +90,7 @@ function Navbar() {
         </ol>
         <div className="font-bold my-2">Subtotal: ₹{totalPrice}</div>
         <div className='flex'>
-         <Link href={'../Checkout'}><button className="flex mr-2  text-white bg-cyan-600 border-0 py-2 px-2 focus:outline-none hover:bg-cyan-700 rounded text-sm"><BsBagCheckFill className='m-1' />Checkout</button></Link> 
+          <Link href={'../Checkout'}><button className="flex mr-2  text-white bg-cyan-600 border-0 py-2 px-2 focus:outline-none hover:bg-cyan-700 rounded text-sm"><BsBagCheckFill className='m-1' />Checkout</button></Link>
           <button className="flex  mr-2  text-white bg-cyan-600 border-0 py-2 px-2 focus:outline-none hover:bg-cyan-700 rounded text-sm" onClick={() => dispatch(removeToCart())}>Clear Cart</button>
 
         </div>
