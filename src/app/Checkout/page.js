@@ -76,7 +76,7 @@ const Checkout = () => {
               <li key={key}>
                 <div className="item flex my-5">
 
-                  <div className='w-2/3 font-semibold' >{product.name}</div>
+                  <div className='w-2/3 font-semibold' >{product.title}</div>
                   <div className='w-1/3 font-semibold  flex items-center justify-center text-lg'>
                     <AiFillMinusCircle onClick={() => dispatch(decrementQuantity(product.id))} className='cursor-pointer  text-cyan-600' />
                     <span className="mx-2 text-sm">{product.quantity}</span>
