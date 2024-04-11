@@ -9,6 +9,7 @@ import { BsBagCheckFill, BsPersonCircle } from "react-icons/bs";
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { incrementQuantity, decrementQuantity, removeToCart, getCartTotal } from '@/store/cartSlice';
+import dynamic from 'next/dynamic';
 
 
 function Navbar() {
@@ -69,7 +70,7 @@ function Navbar() {
         <h2 className='font-bold text-xl text-center'>Shopping Cart</h2>
         <span onClick={toggleCart} className="absolute top-5 right-2 cursor-pointer text-2xl"><AiOutlineCloseCircle /></span>
         <ol className='list-decimal font-semibold'>
-          { item.length==0 && <div className='my-4 font-semibold'>Your cart is Empty!</div>}
+          { item.length==0 && <p className='my-4 font-semibold'>Your cart is Empty!</p>}
           {item && item.map((product, key) => {
             return (
               <li key={key}>
@@ -101,4 +102,5 @@ function Navbar() {
   )
 }
 
-export default Navbar
+
+export default dynamic(() => Promise.resolve(Navbar), { ssr: false })

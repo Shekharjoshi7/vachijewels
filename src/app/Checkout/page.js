@@ -4,6 +4,7 @@ import { incrementQuantity, decrementQuantity ,getCartTotal} from '@/store/cartS
 import {  AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { useDispatch ,useSelector } from 'react-redux';
 import Link from 'next/link';
+import dynamic from'next/dynamic'
 
 const Checkout = () => {
   const item = useSelector((state) => state.allCart.cart);
@@ -99,4 +100,4 @@ const Checkout = () => {
   )
 }
 
-export default Checkout
+export default dynamic(() => Promise.resolve(Checkout), { ssr: false })

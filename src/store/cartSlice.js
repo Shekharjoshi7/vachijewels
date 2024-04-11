@@ -1,14 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const item = localStorage.getItem('cart')!==null ? JSON.parse(localStorage.getItem('cart')):[]
+const item = typeof localStorage !== 'undefined' && localStorage.getItem('cart') !== null ? JSON.parse(localStorage.getItem('cart')): [];
+
 const initialState = {
     cart: item,
     totalQuantity: 0,
     totalPrice: 0
-}
-const saveCart=(myCart)=>{
-    localStorage.setItem("cart",JSON.stringify(myCart))
-}
+};
+
+const saveCart = (myCart) => {
+    if (typeof localStorage !== 'undefined') {
+        localStorage.setItem("cart", JSON.stringify(myCart));
+    }
+};
 const cartSlice = createSlice({
     name: 'cart',
     initialState,
@@ -49,24 +53,23 @@ const cartSlice = createSlice({
             saveCart(newCart)
         },
         decrementQuantity: (state, action) => {
-            state.cart  = state.cart.map((item) => {
+            state.cart = state.cart.map((item) => {
                 if (item.id === action.payload) {
-                    if(item.quantity!==0){
-
-                        return { ...item, quantity: item.quantity - 1 }
+                    // Ensure quantity doesn't go below 0
+                    const newQuantity = Math.max(0, item.quantity - 1);
+                    // If quantity becomes zero, remove the item from the cart
+                    if (newQuantity === 0) {
+                        return null; // Mark item for removal
                     }
-                    else {
-                        return { ...item, quantity: 0 }
-                    }
-                    
+                    return { ...item, quantity: newQuantity };
                 }
-                else {
-                    return item;
-                }
-            })
-            let newCart=state.cart
-            saveCart(newCart)
+                return item;
+            }).filter(Boolean); // Filter out null values (items marked for removal)
+        
+            // Save the updated cart to localStorage
+            saveCart(state.cart);
         },
+        
         getCartTotal:(state)=>{
             let {totalPrice,totalQuantity} = state.cart.reduce(
                 (cartTotal,cartItem)=>{
