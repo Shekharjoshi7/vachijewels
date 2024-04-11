@@ -11,8 +11,6 @@ const page= async({ params })=> {
     await mongoose.connect(process.env.MONGO_URI)
 }
 let product = await Product.findOne({slug:slug});
-console.log(product);
-
 const data = {
   id:product.id,
   title: product.title,
@@ -43,5 +41,4 @@ const data = {
     </div>
   );
 }
-
 export default page

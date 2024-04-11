@@ -65,10 +65,11 @@ function Navbar() {
         <CiShoppingCart onClick={toggleCart} className=' text-xl md:text-3xl text-white ' />
       </div>
 
-      <div ref={ref} className={`w-72 h-full  sideCart absolute top-0 right-0 bg-cyan-400 px-8 py-10 transition-transform ${item.length !== 0 ? 'translate-x-0' : 'translate-x-full'} z-10  text-white `}>
+      <div ref={ref} className={`w-72 h-[100vh]  sideCart overflow-y-scroll absolute top-0 right-0 bg-cyan-400 px-8 py-10 transition-transform ${item.length !== 0 ? 'translate-x-0' : 'translate-x-full'} z-10  text-white `}>
         <h2 className='font-bold text-xl text-center'>Shopping Cart</h2>
         <span onClick={toggleCart} className="absolute top-5 right-2 cursor-pointer text-2xl"><AiOutlineCloseCircle /></span>
         <ol className='list-decimal font-semibold'>
+          { item.length==0 && <div className='my-4 font-semibold'>Your cart is Empty!</div>}
           {item && item.map((product, key) => {
             return (
               <li key={key}>
