@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import Button from '../../../components/Button';
+import Button from '@/components/Button';
 import React from 'react';
 import mongoose  from 'mongoose';
 import Product from '@/models/Product';
