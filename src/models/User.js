@@ -7,6 +7,6 @@ const UserSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Create the model using mongoose.model
-const User =mongoose.model.User || mongoose.model("User", UserSchema);
+const User = mongoose.models.User || mongoose.model("User", UserSchema);
 
 export default User;

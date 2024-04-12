@@ -12,6 +12,6 @@ const OrderSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Create the model using mongoose.model
-const Order =mongoose.model.Order|| mongoose.model("Order", OrderSchema);
+const Order =mongoose.models.Order|| mongoose.model("Order", OrderSchema);
 
 export default Order;
