@@ -8,24 +8,31 @@ import Navbar from "../components/Navbar";
 import './globals.css'
 import { Provider } from 'react-redux';
 import store from '@/store/store';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'] })
 
 
 
 export default function RootLayout({ children }) {
+  const [key, setKey] = useState(0)
+  const path = usePathname();
+  useEffect(() => {
+    setKey(Math.random())
+  }, [path])
   return (
-    <html lang="en">
+    <html className='overflow-x-hidden' lang="en">
       <head>
-      <title>VachiJewels</title>
+        <title>VachiJewels</title>
       </head>
       <body className={inter.className}>
-        <Provider store={store    }>
-      <Navbar/>
-        {children}
-      <Footer/>
+        <Provider store={store}>
+          <Navbar key={key} />
+          {children}
+          <Footer />
         </Provider>
-        </body>
+      </body>
     </html>
   )
 }

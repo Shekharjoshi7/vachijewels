@@ -1,25 +1,36 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { CiShoppingCart } from "react-icons/ci";
 import { AiOutlineCloseCircle, AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { BsBagCheckFill, BsPersonCircle } from "react-icons/bs";
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { incrementQuantity, decrementQuantity, removeToCart, getCartTotal } from '@/store/cartSlice';
 import dynamic from 'next/dynamic';
+import { auth } from '@/store/userSlice';
+
 
 
 function Navbar() {
-
+  const [dropdown, setDropdown] = useState(false);
+  const user = useSelector((state) => state.users.user);
   const item = useSelector((state) => state.allCart.cart);
   const { totalPrice } = useSelector((state) => state.allCart);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCartTotal());
   }, [item])
+
+  useEffect(() => {
+    let token = localStorage.getItem('token')
+    if (token) {
+      dispatch(auth(token))
+    }
+  }, [])
+
+
 
   const toggleCart = () => {
     if (ref.current.classList.contains('translate-x-full')) {
@@ -35,10 +46,14 @@ function Navbar() {
 
   }
   const ref = useRef()
+  const logout = () => {
+    localStorage.removeItem('token')
+    dispatch(auth(null))
+  }
   return (
 
     <div className='flex flex-col md:flex-row justify-center md:justify-start items-center py-3 shadow-md  bg-cyan-600'>
-      <div className=" logo mx-5" >
+      <div className=" logo mr-auto md:mx-5" >
         <Link href={'/'}>
           <Image height={40} width={150} className='aspect-auto ' src='/logo.png' alt=''></Image>
         </Link>
@@ -59,10 +74,21 @@ function Navbar() {
           </Link>
         </ul>
       </div>
-      <div className=" flex  cart absolute right-1 top-4 mx-4 cursor-pointer">
-        <Link className=' m-auto' href={"/login"}>
-          <BsPersonCircle className='mx-2 text-xl md:text-2xl text-white ' />
-        </Link>
+      <div className=" flex items-center  cart absolute right-1 top-3 mx-4 cursor-pointer">
+        <div onMouseOver={() => { setDropdown(true) }} onMouseLeave={() => { setDropdown(false) }}>
+          {dropdown && <div onMouseOver={() => { setDropdown(true) }} onMouseLeave={() => { setDropdown(false) }} className='absolute right-8 py-4  bg-cyan-400 top-7 rounded-md px-5 w-32 shadow-lg '>
+            <ul>
+              <Link href={'/myaccount'}> <li className="py-1 font-bold text-white hover:text-cyan-900 text-sm">My Account</li></Link>
+              <Link href={'/orders'}> <li className="py-1 font-bold text-white hover:text-cyan-900 text-sm">Orders</li></Link>
+              <li onClick={logout} className="py-1 font-bold text-white hover:text-cyan-900 text-sm cursor-pointer">Logout</li>
+            </ul>
+          </div>}
+
+          {user && <BsPersonCircle className='mx-2 text-xl md:text-2xl text-white ' />}
+        </div>
+        {!user && <Link className=' m-auto' href={"/login"}>
+          <button className='bg-cyan-900 px-2 py-1 rounded-md text-sm text-white mx-2'>Login</button>
+        </Link>}
         <CiShoppingCart onClick={toggleCart} className=' text-xl md:text-3xl text-white ' />
       </div>
 
@@ -70,7 +96,7 @@ function Navbar() {
         <h2 className='font-bold text-xl text-center'>Shopping Cart</h2>
         <span onClick={toggleCart} className="absolute top-5 right-2 cursor-pointer text-2xl"><AiOutlineCloseCircle /></span>
         <ol className='list-decimal font-semibold'>
-          { item.length==0 && <p className='my-4 font-semibold'>Your cart is Empty!</p>}
+          {item.length == 0 && <p className='my-4 font-semibold'>Your cart is Empty!</p>}
           {item && item.map((product, key) => {
             return (
               <li key={key}>
