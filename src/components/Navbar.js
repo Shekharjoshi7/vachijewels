@@ -10,10 +10,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { incrementQuantity, decrementQuantity, removeToCart, getCartTotal } from '@/store/cartSlice';
 import dynamic from 'next/dynamic';
 import { auth } from '@/store/userSlice';
+import { useRouter } from 'next/navigation';
 
 
 
 function Navbar() {
+  const Router = useRouter();
   const [dropdown, setDropdown] = useState(false);
   const user = useSelector((state) => state.users.user);
   const item = useSelector((state) => state.allCart.cart);
@@ -49,6 +51,7 @@ function Navbar() {
   const logout = () => {
     localStorage.removeItem('token')
     dispatch(auth(null))
+    Router.push('./')
   }
   return (
 

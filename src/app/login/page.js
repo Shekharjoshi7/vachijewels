@@ -1,15 +1,21 @@
 /* eslint-disable no-undef */
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useRouter } from 'next/navigation';
+import { useRouter,redirect } from 'next/navigation';
 
 const page = () => {
     const Router = useRouter();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    useEffect(()=>{
+        if(localStorage.getItem('token'))
+        {
+            redirect('./')
+        }
+    },[])
     const handleChange = (e) => {
 
         if (e.target.name == 'email') {
