@@ -78,7 +78,7 @@ function Navbar() {
         </ul>
       </div>
       <div className=" flex items-center  cart absolute right-1 top-3 mx-4 cursor-pointer">
-        <div onMouseOver={() => { setDropdown(true) }} onMouseLeave={() => { setDropdown(false) }}>
+        <span onMouseOver={() => { setDropdown(true) }} onMouseLeave={() => { setDropdown(false) }}>
           {dropdown && <div onMouseOver={() => { setDropdown(true) }} onMouseLeave={() => { setDropdown(false) }} className='absolute right-8 py-4  bg-cyan-400 top-7 rounded-md px-5 w-32 shadow-lg '>
             <ul>
               <Link href={'/myaccount'}> <li className="py-1 font-bold text-white hover:text-cyan-900 text-sm">My Account</li></Link>
@@ -88,7 +88,7 @@ function Navbar() {
           </div>}
 
           {user && <BsPersonCircle className='mx-2 text-xl md:text-2xl text-white ' />}
-        </div>
+        </span>
         {!user && <Link className=' m-auto' href={"/login"}>
           <button className='bg-cyan-900 px-2 py-1 rounded-md text-sm text-white mx-2'>Login</button>
         </Link>}

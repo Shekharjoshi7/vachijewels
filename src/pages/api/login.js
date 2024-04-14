@@ -7,9 +7,9 @@ import jwt from'jsonwebtoken'
 const handler = async(req,res)=>{
     if(req.method=='POST'){
         let user = await User.findOne({"email":req.body.email})
-        const bytes=CryptoJS.AES.decrypt(user.password, "Secret123")
-        let decryptedPass=bytes.toString(CryptoJS.enc.Utf8)
         if (user) {
+            const bytes=CryptoJS.AES.decrypt(user.password, "Secret123")
+            let decryptedPass=bytes.toString(CryptoJS.enc.Utf8)
             if(req.body.email == user.email && req.body.password == decryptedPass)
             {
                 let token =jwt.sign({ email:user.email , name:user.name},'jwtsecret',{expiresIn:'2d'});

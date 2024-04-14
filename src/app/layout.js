@@ -16,7 +16,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 
 export default function RootLayout({ children }) {
-  const [key, setKey] = useState(0)
+  const [key, setKey] = useState()
   const path = usePathname();
   useEffect(() => {
     setKey(Math.random())
@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={inter.className}>
         <Provider store={store}>
-          <Navbar key={key} />
+          {key&&<Navbar key={key} />}
           {children}
           <Footer />
         </Provider>

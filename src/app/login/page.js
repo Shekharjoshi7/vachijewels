@@ -6,6 +6,7 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter,redirect } from 'next/navigation';
 
+
 const page = () => {
     const Router = useRouter();
     const [email, setEmail] = useState('')
@@ -28,7 +29,7 @@ const page = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const data = { email, password }
-        let res = await fetch('http://localhost:3000/api/login', {
+        let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
