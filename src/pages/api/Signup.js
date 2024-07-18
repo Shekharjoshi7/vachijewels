@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import User from "@/models/User"
 import connectDb from "@/middleware/mongoose"
@@ -9,7 +10,7 @@ const handler = async(req,res)=>{
         let u = new User({
             name,
             email,
-            password:CryptoJS.AES.encrypt(req.body.password, "Secret123").toString()
+            password:CryptoJS.AES.encrypt(req.body.password, process.env.AES_Secret).toString()
         });
         u.save();
         res.status(200).json({success:"success"})

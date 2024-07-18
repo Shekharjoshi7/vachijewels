@@ -1,14 +1,14 @@
 /* eslint-disable react/react-in-jsx-scope */
-import Image from 'next/image'
+import Slide from '@/components/Slide'
 
 export default function App() {
   return (
     <>
-      <div>
-        <Image width={2000} height={100} src="/Home.png"  alt="" />
+      <div className='w-screen h-screen'>
+       <Slide/>
       </div>
       <section className="text-gray-600 body-font">
-        <div className="container px-5 py-24 mx-auto">
+        <div className="container px-5 py-6 mx-auto">
           <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
             <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">VachiJewels</h1>
             <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">Your Trust,Our Quality</p>

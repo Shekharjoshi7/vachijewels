@@ -1,20 +1,68 @@
+/* eslint-disable no-undef */
 'use client'
 import React, { useEffect } from 'react'
-import { incrementQuantity, decrementQuantity ,getCartTotal} from '@/store/cartSlice';
-import {  AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
-import { useDispatch ,useSelector } from 'react-redux';
+import { incrementQuantity, decrementQuantity, getCartTotal } from '@/store/cartSlice';
+import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
+import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
-import dynamic from'next/dynamic'
+import dynamic from 'next/dynamic'
+import Head from 'next/head';
+import Script from 'next/script';
 
 const Checkout = () => {
+  const initiatePayment = async() => {
+
+    let oid=Math.floor(Math.random()*Date.now());
+    const data = { item , totalPrice , oid , email:'email'}
+    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    let tnxRes = await res.json();
+    let tnxToken=tnxRes.tnxToken;
+
+    var config = {
+      "root": "",
+      "flow": "DEFAULT",
+      "data": {
+        "orderId":oid, /* update order id */
+        "token": tnxToken, /* update token value */
+        "tokenType": "TXN_TOKEN",
+        "amount": totalPrice/* update amount */
+      },
+      "handler": {
+        "notifyMerchant": function (eventName, data) {
+          console.log("notifyMerchant handler function called");
+          console.log("eventName => ", eventName);
+          console.log("data => ", data);
+        }
+      }
+    };
+
+    // initialze configuration using init method
+    window.Paytm.CheckoutJS.init(config).then(function onSuccess() {
+      // after successfully updating configuration, invoke JS Checkout
+      window.Paytm.CheckoutJS.invoke();
+    }).catch(function onError(error) {
+      console.log("error => ", error);
+    });
+
+  }
   const item = useSelector((state) => state.allCart.cart);
-  const {totalPrice} = useSelector((state) => state.allCart);
+  const { totalPrice } = useSelector((state) => state.allCart);
   const dispatch = useDispatch();
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getCartTotal());
-  },[item])
+  }, [item])
   return (
     <div className='container m-auto '>
+      <Head>
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
+      </Head>
+      <Script type="application/javascript" src={`${process.env.NEXT_PUBLIC_PAYTM_HOST}/merchantpgpui/checkoutjs/merchants/${process.env.PAYTM_MID}.js`}  crossorigin="anonymous"></Script>
       <h1 className='font-bold text-3xl text-center my-8'>Checkout</h1>
       <div className='p-2'>
         <h2 className='font-semibold text-xl'>1. Delivery Details</h2>
@@ -69,30 +117,30 @@ const Checkout = () => {
       </div>
       <div className="p-2">
 
-      <h2 className='font-semibold text-xl'>2. Review Cart Item & Pay</h2>
-      <div  className=' sideCart bg-cyan-200 p-6 m-2'>
-        <ol className='list-decimal font-semibold'>
-          {item && item.map((product, key) => {
-            return (
-              <li key={key}>
-                <div className="item flex my-5">
+        <h2 className='font-semibold text-xl'>2. Review Cart Item & Pay</h2>
+        <div className=' sideCart bg-cyan-200 p-6 m-2'>
+          <ol className='list-decimal font-semibold'>
+            {item && item.map((product, key) => {
+              return (
+                <li key={key}>
+                  <div className="item flex my-5">
 
-                  <div className='w-2/3 font-semibold' >{product.title}</div>
-                  <div className='w-1/3 font-semibold  flex items-center justify-center text-lg'>
-                    <AiFillMinusCircle onClick={() => dispatch(decrementQuantity(product.id))} className='cursor-pointer  text-cyan-600' />
-                    <span className="mx-2 text-sm">{product.quantity}</span>
-                    <AiFillPlusCircle onClick={() => dispatch(incrementQuantity(product.id))} className='cursor-pointer  text-cyan-600' />
+                    <div className='w-2/3 font-semibold' >{product.title}</div>
+                    <div className='w-1/3 font-semibold  flex items-center justify-center text-lg'>
+                      <AiFillMinusCircle onClick={() => dispatch(decrementQuantity(product.id))} className='cursor-pointer  text-cyan-600' />
+                      <span className="mx-2 text-sm">{product.quantity}</span>
+                      <AiFillPlusCircle onClick={() => dispatch(incrementQuantity(product.id))} className='cursor-pointer  text-cyan-600' />
+                    </div>
                   </div>
-                </div>
-              </li>
-            )
-          })
-          }
-        </ol>
-        <span className="font-bold">Subtotal:₹{totalPrice}</span>
-      </div>
+                </li>
+              )
+            })
+            }
+          </ol>
+          <span className="font-bold">Subtotal:₹{totalPrice}</span>
+        </div>
         <div className="mx-4">
-        <Link href={'../Checkout'}><button className="flex mr-2  text-white bg-cyan-600 border-0 py-2 px-2 focus:outline-none hover:bg-cyan-700 rounded text-sm">Pay ₹ {totalPrice}</button></Link> 
+          <Link href={'../Checkout'}><button onClick={initiatePayment} className="flex mr-2  text-white bg-cyan-600 border-0 py-2 px-2 focus:outline-none hover:bg-cyan-700 rounded text-sm">Pay ₹ {totalPrice}</button></Link>
         </div>
       </div>
 

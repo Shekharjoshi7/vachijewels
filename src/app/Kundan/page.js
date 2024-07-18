@@ -9,7 +9,7 @@ const Kundan = async () => {
     const products = await getdata();
     return (
         <div>
-            <section className="text-gray-600 body-font">
+            <section className="text-gray-600 body-font h-screen">
                 <div className="container px-5 py-24 mx-auto">
                     <div className="flex flex-wrap -m-4 justify-center">
                     { products.length==0 && <div className='my-4 font-semibold'>We are adding Kundan jewellery soon.</div>}

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import User from "@/models/User"
 import connectDb from "@/middleware/mongoose"
@@ -8,11 +9,11 @@ const handler = async(req,res)=>{
     if(req.method=='POST'){
         let user = await User.findOne({"email":req.body.email})
         if (user) {
-            const bytes=CryptoJS.AES.decrypt(user.password, "Secret123")
+            const bytes=CryptoJS.AES.decrypt(user.password, process.env.AES_Secret)
             let decryptedPass=bytes.toString(CryptoJS.enc.Utf8)
             if(req.body.email == user.email && req.body.password == decryptedPass)
             {
-                let token =jwt.sign({ email:user.email , name:user.name},'jwtsecret',{expiresIn:'2d'});
+                let token =jwt.sign({ email:user.email , name:user.name},process.env.JWT_Secret,{expiresIn:'2d'});
                 res.status(200).json({success:true ,token})
             }
             else{

@@ -55,7 +55,7 @@ function Navbar() {
   }
   return (
 
-    <div className='flex flex-col md:flex-row justify-center md:justify-start items-center py-3 shadow-md  bg-cyan-600'>
+    <div className='flex flex-col md:flex-row justify-center md:justify-start sticky top-0 items-center py-3 shadow-md  bg-cyan-600'>
       <div className=" logo mr-auto md:mx-5" >
         <Link href={'/'}>
           <Image height={40} width={150} className='aspect-auto ' src='/logo.png' alt=''></Image>

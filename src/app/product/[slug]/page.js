@@ -15,7 +15,7 @@ const data = {
   id:product.id,
   title: product.title,
   price: product.price,
-  quantity: product.availableQty
+  quantity: 1
 }
   return (
     <div>
